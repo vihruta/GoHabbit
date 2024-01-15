@@ -1,0 +1,31 @@
+[tool.poetry]
+name = "base-tg-bot"
+version = "1.0.0"
+description = ""
+authors = ["TrixiS <oficialmorozov@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+aioschedule = "^0.5.2"
+aiogram = {git = "https://github.com/aiogram/aiogram.git", rev = "2ecf9cefd7011621398db4ec48cf894273f0c9d6"}
+aiogram3-form = "0.6.3"
+tortoise-orm = "^0.20.0"
+aerich = "^0.7.2"
+pydantic-settings = "^2.0.3"
+uvloop = [{version = "^0.17.0", platform = "darwin"}, {version = "^0.17.0", platform = "unix"}]
+tiktoken = "^0.5.1"
+openai = "^0.28.1"
+
+[tool.poetry.group.dev.dependencies]
+typer = "^0.9.0"
+
+
+[tool.aerich]
+tortoise_orm = "bot.database.__init__.TORTOISE_ORM"
+location = "./migrations"
+src_folder = "./."
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

@@ -1,0 +1,1 @@
+(python -m pip install -U wheel -r requirements.txt --quiet && python -m bot) || pause

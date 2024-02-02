@@ -13,3 +13,4 @@ class PromptState(StatesGroup):
     waiting_answer = State()
     waiting_for_promo = State()
     waiting_for_date = State()
+    waiting_for_habit = State()

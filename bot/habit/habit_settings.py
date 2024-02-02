@@ -1,9 +1,9 @@
-from datetime import datetime, timedelta
+import logging
+
 from ..database.models import BotUser
-from ..core import bot
-from ..phrases import phrases
 from ..schedule import jobs
 import json
+from ..phrases import phrases_for_prompt
 
 
 async def check_date(user_id, habit_date, habit_type):
@@ -31,8 +31,32 @@ async def add_date_to_database(user_id, habit_date_list, habit_type):
     user = await BotUser.get(id=user_id)
     await user.set_habit_schedule(habit_type, habit_date_list)
 
-    await bot.send_message(user_id, f'Время установлено для {habit_type}')
-
     habit_schedule_dict = json.loads(user.habit_schedule)
     await jobs.add_user_schedule(user_id, habit_schedule_dict)
+
+
+async def get_habit_list(user_id):
+    user = await BotUser.get(id=user_id)
+    if user.habit_schedule and isinstance(user.habit_schedule, str):
+        habit_schedule = json.loads(user.habit_schedule)
+    else:
+        habit_schedule = user.habit_schedule or {}
+    return habit_schedule
+
+
+def choose_prompt_for_habit(habit_type):
+    if 'Water' in habit_type:
+        if 'Reminder' in habit_type:
+            return phrases_for_prompt.PromptPhrases.water_reminder
+        return phrases_for_prompt.PromptPhrases.water
+    if 'Sleep' in habit_type:
+        if 'Reminder' in habit_type:
+            return phrases_for_prompt.PromptPhrases.sleep_reminder
+        return phrases_for_prompt.PromptPhrases.sleep
+    if habit_type == 'Drugs':
+        return phrases_for_prompt.PromptPhrases.drugs
+
+
+def check_timezone():
+    pass
 

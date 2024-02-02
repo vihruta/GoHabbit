@@ -46,6 +46,18 @@ select_habit_markup = (
     .as_markup(resize_keyboard=True)
 )
 
+confirm_action_markup = (
+    InlineKeyboardBuilder()
+    .row(
+        InlineKeyboardButton(text=button_phrases.ButtonPhrases.confirmation,
+                             callback_data='yes'),
+        InlineKeyboardButton(text=button_phrases.ButtonPhrases.decline,
+                             callback_data='no')
+    )
+    .as_markup(resize_keyboard=True)
+)
+
+
 def payment_markup(url, payment_id, price):
     payment_mark_up = (
         InlineKeyboardBuilder()

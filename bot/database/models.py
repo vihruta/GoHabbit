@@ -8,6 +8,7 @@ class BotUser(Model):
     username = fields.TextField(null=True)
     full_name = fields.TextField()
     joined_at = fields.DatetimeField(auto_now_add=True)
+    timezone = fields.IntField(null=True)
     left_at = fields.DatetimeField(null=True)
     trial_requests_remaining = fields.IntField(default=10, null=True)
     subscription_started_at = fields.DatetimeField(null=True)

@@ -43,3 +43,5 @@ tiktoken~=0.5.1
 openai~=0.28.1
 yookassa~=2.5.0
 aioschedule~=0.5.2
+pytz~=2023.3.post1
+APScheduler~=3.6.3

@@ -27,7 +27,7 @@ def create_payment(price):
         "receipt": {
             "items": [
                 {
-                    "description": "Оплата подписки EruditGPT-Bot",
+                    "description": "Оплата подписки GoHabbit",
                     "quantity": "1.00",
                     "amount": {
                         "value": price,

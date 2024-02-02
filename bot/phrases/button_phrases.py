@@ -7,7 +7,6 @@ class ButtonPhrases:
     month_subscription = "На месяц: 249₽ (экономия 40%)"
     quarter_subscription = 'На 3 месяца: 599₽ (экономия 60%)'
     promocode_text = 'У меня есть промокод'
-
     week_price = '99'
     month_price = '249'
     quarter_price = '599'
@@ -23,3 +22,5 @@ class ButtonPhrases:
     water = 'Вода'
     sleep = 'Сон'
     drugs = 'Таблетки'
+    confirmation = 'Да'
+    decline = 'Нет'

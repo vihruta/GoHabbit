@@ -8,7 +8,6 @@ from .utils import loader, startup
 from .utils.paths import ROOT_PATH
 from .utils.services import ServiceMiddleware
 from .utils.token_service import TokenService
-from .schedule import ScheduleService
 
 
 async def setup_services():
@@ -34,6 +33,8 @@ def setup_middleware():
 async def on_startup():
     me = await bot.get_me()
     print(phrases.bot_started.format(me=me))
+    from .schedule.jobs import setup_habit_schedules
+    await setup_habit_schedules()
 
 
 @dispatcher.shutdown()
@@ -52,12 +53,10 @@ async def main():
 
     setup_middleware()
     await setup_services()
-
     loader.import_routers()
     dispatcher.include_router(routers.root_router)
-
+    logging.info('Бот запущен!')
     used_update_types = dispatcher.resolve_used_update_types()
     await dispatcher.start_polling(bot, allowed_updates=used_update_types)
-
 
 startup.run(main())

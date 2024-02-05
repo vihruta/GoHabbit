@@ -14,3 +14,4 @@ class PromptState(StatesGroup):
     waiting_for_promo = State()
     waiting_for_date = State()
     waiting_for_habit = State()
+    waiting_for_timezone = State()

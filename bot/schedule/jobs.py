@@ -13,8 +13,6 @@ from ..habit import habit_settings
 from .. import markups
 from ..database.models import BotUser
 
-tz = timezone('Europe/Moscow')
-
 
 async def send_reminder(user_id, habit_type, state: FSMContext = None):
     try:
@@ -41,6 +39,9 @@ async def send_reminder(user_id, habit_type, state: FSMContext = None):
 
 async def add_user_schedule(*args):
     user_id = args[0]
+    tz_str = await habit_settings.return_timezone_str_from_db(user_id)
+    logging.info(tz_str)
+    tz = timezone(tz_str)
     if len(args) == 3:
         reminder_data = args[1] + 'Reminder'
         five_minutes_later = datetime.now(tz) + timedelta(minutes=5)
@@ -50,8 +51,6 @@ async def add_user_schedule(*args):
         reminder_data = args[1]
         for habit_type, times in reminder_data.items():
             for time in times:
-                # logging.info(f'{user_id},{habit_type}')
-                # logging.info(f'Настройкая для времени {time}')
                 hours, minutes = map(int, time.split(':'))
                 current_time = datetime.now().astimezone(tz)
                 # Задайте время выполнения задачи, добавив текущее время и время из reminder_data

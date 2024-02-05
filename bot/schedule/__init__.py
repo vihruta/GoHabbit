@@ -6,6 +6,6 @@ from pytz import timezone
 scheduler = AsyncIOScheduler()
 scheduler.start()
 
-tz = timezone('Europe/Moscow')  # Замените на нужный вам часовой пояс
+tz = timezone('UTC')  # Замените на нужный вам часовой пояс
 
 

@@ -47,9 +47,14 @@ async def pay_command_handler(message: types.Message):
 
 @router.message(Command(commands=['habit']))
 async def choose_habit(message: types.Message, state: FSMContext):
-    await message.answer("Выберите привычку.",
-                         reply_markup=markups.select_habit_markup)
-    await state.set_state(PromptState.waiting_for_habit)
+    if not await habit_settings.check_timezone(message.from_user.id):
+        await message.answer('Давайте выберем часовой пояс: '
+                             'Сколько у вас сейчас времени? Пример: 18:31')
+        await state.set_state(PromptState.waiting_for_timezone)
+    else:
+        await message.answer("Выберите привычку.",
+                             reply_markup=markups.select_habit_markup)
+        await state.set_state(PromptState.waiting_for_habit)
 
 
 @router.message(logic.or_f(StateFilter(PromptState.waiting_for_habit)
@@ -112,6 +117,18 @@ async def handle_date_info(message: types.Message, state: FSMContext):
         await state.set_state(None)
     else:
         await message.answer(phrases.habit_date_error)
+
+
+@router.message(logic.or_f(StateFilter(PromptState.waiting_for_timezone)))
+async def choose_timezone(message: types.Message, state: FSMContext):
+    user_time = message.text
+    if await habit_settings.add_timezone(message.from_user.id, user_time):
+        await state.set_state(None)
+        await choose_habit(message, state)
+    else:
+        await message.answer('Неверное время. Убедитесь, что '
+                             'вы ввели точное время в формате ЧЧ:ММ. '
+                             'Пример: 18:31')
 
 
 @router.message(
